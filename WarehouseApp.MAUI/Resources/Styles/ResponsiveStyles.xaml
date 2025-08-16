@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Responsive Design System -->
+
+    <!-- Spacing Values -->
+    <x:Double x:Key="SpacingXS">4</x:Double>
+    <x:Double x:Key="SpacingSM">8</x:Double>
+    <x:Double x:Key="SpacingMD">16</x:Double>
+    <x:Double x:Key="SpacingLG">24</x:Double>
+    <x:Double x:Key="SpacingXL">32</x:Double>
+    <x:Double x:Key="SpacingXXL">48</x:Double>
+
+    <!-- Border Radius Values -->
+    <x:Double x:Key="RadiusXS">4</x:Double>
+    <x:Double x:Key="RadiusSM">6</x:Double>
+    <x:Double x:Key="RadiusMD">8</x:Double>
+    <x:Double x:Key="RadiusLG">12</x:Double>
+    <x:Double x:Key="RadiusXL">16</x:Double>
+    <x:Double x:Key="RadiusXXL">24</x:Double>
+
+    <!-- Font Sizes -->
+    <x:Double x:Key="FontSizeXS">10</x:Double>
+    <x:Double x:Key="FontSizeSM">12</x:Double>
+    <x:Double x:Key="FontSizeMD">14</x:Double>
+    <x:Double x:Key="FontSizeLG">16</x:Double>
+    <x:Double x:Key="FontSizeXL">18</x:Double>
+    <x:Double x:Key="FontSizeXXL">20</x:Double>
+    <x:Double x:Key="FontSize2XL">24</x:Double>
+    <x:Double x:Key="FontSize3XL">32</x:Double>
+
+    <!-- Icon Sizes -->
+    <x:Double x:Key="IconSizeXS">16</x:Double>
+    <x:Double x:Key="IconSizeSM">20</x:Double>
+    <x:Double x:Key="IconSizeMD">24</x:Double>
+    <x:Double x:Key="IconSizeLG">32</x:Double>
+    <x:Double x:Key="IconSizeXL">40</x:Double>
+    <x:Double x:Key="IconSizeXXL">48</x:Double>
+
+    <!-- Button Heights -->
+    <x:Double x:Key="ButtonHeightSM">32</x:Double>
+    <x:Double x:Key="ButtonHeightMD">40</x:Double>
+    <x:Double x:Key="ButtonHeightLG">48</x:Double>
+    <x:Double x:Key="ButtonHeightXL">56</x:Double>
+
+    <!-- Container Widths -->
+    <x:Double x:Key="ContainerSM">640</x:Double>
+    <x:Double x:Key="ContainerMD">768</x:Double>
+    <x:Double x:Key="ContainerLG">1024</x:Double>
+    <x:Double x:Key="ContainerXL">1280</x:Double>
+
+    <!-- Grid Columns -->
+    <GridLength x:Key="Col1">*</GridLength>
+    <GridLength x:Key="Col2">2*</GridLength>
+    <GridLength x:Key="Col3">3*</GridLength>
+    <GridLength x:Key="Col4">4*</GridLength>
+    <GridLength x:Key="ColAuto">Auto</GridLength>
+
+    <!-- Responsive Layout Styles -->
+    <Style x:Key="ResponsiveGrid" TargetType="Grid">
+        <Setter Property="ColumnSpacing" Value="{StaticResource SpacingMD}" />
+        <Setter Property="RowSpacing" Value="{StaticResource SpacingMD}" />
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+    </Style>
+
+    <Style x:Key="ResponsiveStackLayout" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="{StaticResource SpacingMD}" />
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+    </Style>
+
+    <!-- Mobile-First Responsive Styles -->
+    <Style x:Key="MobileCard" TargetType="Frame">
+        <Setter Property="Margin" Value="{StaticResource SpacingSM}" />
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMD}" />
+    </Style>
+
+    <Style x:Key="TabletCard" TargetType="Frame">
+        <Setter Property="Margin" Value="{StaticResource SpacingMD}" />
+        <Setter Property="Padding" Value="{StaticResource SpacingLG}" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusLG}" />
+    </Style>
+
+    <!-- Touch Target Styles -->
+    <Style x:Key="TouchTarget" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="44" />
+        <Setter Property="MinimumWidthRequest" Value="44" />
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+    </Style>
+
+    <Style x:Key="TouchTargetLarge" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="56" />
+        <Setter Property="MinimumWidthRequest" Value="56" />
+        <Setter Property="Padding" Value="{StaticResource SpacingLG}" />
+    </Style>
+
+    <!-- List Item Styles -->
+    <Style x:Key="ListItem" TargetType="Grid">
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+        <Setter Property="ColumnSpacing" Value="{StaticResource SpacingMD}" />
+        <Setter Property="MinimumHeightRequest" Value="64" />
+    </Style>
+
+    <Style x:Key="ListItemCompact" TargetType="Grid">
+        <Setter Property="Padding" Value="{StaticResource SpacingSM}" />
+        <Setter Property="ColumnSpacing" Value="{StaticResource SpacingSM}" />
+        <Setter Property="MinimumHeightRequest" Value="48" />
+    </Style>
+
+    <!-- Form Styles -->
+    <Style x:Key="FormContainer" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="{StaticResource SpacingLG}" />
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+    </Style>
+
+    <Style x:Key="FormGroup" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="{StaticResource SpacingSM}" />
+    </Style>
+
+    <Style x:Key="FormInput" TargetType="Entry">
+        <Setter Property="MinimumHeightRequest" Value="{StaticResource ButtonHeightLG}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLG}" />
+    </Style>
+
+    <!-- Dashboard Grid Styles -->
+    <Style x:Key="DashboardGrid" TargetType="Grid">
+        <Setter Property="ColumnSpacing" Value="{StaticResource SpacingMD}" />
+        <Setter Property="RowSpacing" Value="{StaticResource SpacingMD}" />
+        <Setter Property="Padding" Value="{StaticResource SpacingMD}" />
+    </Style>
+
+    <Style x:Key="StatsCard" TargetType="Frame">
+        <Setter Property="Padding" Value="{StaticResource SpacingLG}" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusLG}" />
+        <Setter Property="MinimumHeightRequest" Value="120" />
+        <Setter Property="HasShadow" Value="True" />
+    </Style>
+
+    <!-- Navigation Styles -->
+    <Style x:Key="TabBarStyle" TargetType="Shell">
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource TextSecondary}" />
+    </Style>
+
+    <!-- Elevation Shadows -->
+    <Shadow x:Key="ElevationLow" Brush="{StaticResource Gray300}" Opacity="0.2" Radius="4" Offset="0,1" />
+    <Shadow x:Key="ElevationMedium" Brush="{StaticResource Gray400}" Opacity="0.25" Radius="8" Offset="0,2" />
+    <Shadow x:Key="ElevationHigh" Brush="{StaticResource Gray500}" Opacity="0.3" Radius="12" Offset="0,4" />
+    <Shadow x:Key="ElevationVeryHigh" Brush="{StaticResource Gray600}" Opacity="0.35" Radius="16" Offset="0,6" />
+
+</ResourceDictionary>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="WarehouseApp.MAUI.Views.PhotoCapturePage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WarehouseApp.MAUI.ViewModels"
+             x:DataType="viewmodels:PhotoCaptureViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Clear All"
+                     Command="{Binding ClearAllImagesCommand}"
+                     IconImageSource="delete.png" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Action Buttons -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="{StaticResource SpacingMD}"
+              Padding="{StaticResource SpacingMD}">
+
+            <Button Grid.Column="0"
+                    Text="📷 Camera"
+                    Command="{Binding CapturePhotoCommand}"
+                    Style="{StaticResource ButtonPrimary}"
+                    IsEnabled="{Binding IsCameraAvailable}" />
+
+            <Button Grid.Column="1"
+                    Text="🖼️ Gallery"
+                    Command="{Binding PickPhotoCommand}"
+                    Style="{StaticResource ButtonSecondary}"
+                    IsEnabled="{Binding IsGalleryAvailable}" />
+        </Grid>
+
+        <!-- Main Content -->
+        <ScrollView Grid.Row="1">
+            <Grid RowDefinitions="Auto,Auto,*"
+                  RowSpacing="{StaticResource SpacingLG}"
+                  Padding="{StaticResource SpacingMD}">
+
+                <!-- Image Preview Section -->
+                <Frame Grid.Row="0"
+                       Style="{StaticResource Card}"
+                       IsVisible="{Binding ShowImagePreview}">
+                    <Grid RowDefinitions="Auto,300,Auto"
+                          RowSpacing="{StaticResource SpacingMD}">
+
+                        <!-- Preview Header -->
+                        <Grid Grid.Row="0"
+                              ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="Image Preview"
+                                   Style="{StaticResource HeadingSmall}" />
+                            <Button Grid.Column="1"
+                                    Text="✕"
+                                    Command="{Binding HideImagePreviewCommand}"
+                                    Style="{StaticResource ButtonSmall}"
+                                    BackgroundColor="{StaticResource Gray200}"
+                                    TextColor="{StaticResource TextSecondary}"
+                                    WidthRequest="32"
+                                    HeightRequest="32" />
+                        </Grid>
+
+                        <!-- Image Display -->
+                        <Frame Grid.Row="1"
+                               BackgroundColor="{StaticResource Gray100}"
+                               CornerRadius="{StaticResource RadiusMD}"
+                               Padding="0"
+                               HasShadow="False">
+                            <Image Source="{Binding ImagePreviewPath}"
+                                   Aspect="AspectFit"
+                                   HeightRequest="300" />
+                        </Frame>
+
+                        <!-- Image Actions -->
+                        <Grid Grid.Row="2"
+                              ColumnDefinitions="*,*,*"
+                              ColumnSpacing="{StaticResource SpacingSM}">
+                            <Button Grid.Column="0"
+                                    Text="ℹ️ Info"
+                                    Command="{Binding GetImageInfoCommand}"
+                                    CommandParameter="{Binding SelectedImagePath}"
+                                    Style="{StaticResource ButtonSmall}"
+                                    BackgroundColor="{StaticResource Info}"
+                                    TextColor="White" />
+                            <Button Grid.Column="1"
+                                    Text="🗜️ Compress"
+                                    Command="{Binding CompressImageCommand}"
+                                    CommandParameter="{Binding SelectedImagePath}"
+                                    Style="{StaticResource ButtonSmall}"
+                                    BackgroundColor="{StaticResource Accent}"
+                                    TextColor="White" />
+                            <Button Grid.Column="2"
+                                    Text="🗑️ Delete"
+                                    Command="{Binding DeleteImageCommand}"
+                                    CommandParameter="{Binding SelectedImagePath}"
+                                    Style="{StaticResource ButtonSmall}"
+                                    BackgroundColor="{StaticResource Error}"
+                                    TextColor="White" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <!-- Compression Settings -->
+                <Frame Grid.Row="1"
+                       Style="{StaticResource Card}">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          RowSpacing="{StaticResource SpacingMD}">
+
+                        <Label Grid.Row="0"
+                               Text="Compression Settings"
+                               Style="{StaticResource HeadingSmall}" />
+
+                        <Grid Grid.Row="1"
+                              ColumnDefinitions="Auto,*"
+                              ColumnSpacing="{StaticResource SpacingMD}">
+                            <Label Grid.Column="0"
+                                   Text="Quality:"
+                                   Style="{StaticResource BodyMedium}"
+                                   VerticalOptions="Center" />
+                            <Entry Grid.Column="1"
+                                   Text="{Binding CompressionQuality}"
+                                   Placeholder="80"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource InputField}" />
+                        </Grid>
+
+                        <Grid Grid.Row="2"
+                              ColumnDefinitions="Auto,*,Auto,*"
+                              ColumnSpacing="{StaticResource SpacingMD}">
+                            <Label Grid.Column="0"
+                                   Text="Max Width:"
+                                   Style="{StaticResource BodyMedium}"
+                                   VerticalOptions="Center" />
+                            <Entry Grid.Column="1"
+                                   Text="{Binding MaxImageWidth}"
+                                   Placeholder="1024"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource InputField}" />
+                            <Label Grid.Column="2"
+                                   Text="Max Height:"
+                                   Style="{StaticResource BodyMedium}"
+                                   VerticalOptions="Center" />
+                            <Entry Grid.Column="3"
+                                   Text="{Binding MaxImageHeight}"
+                                   Placeholder="1024"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource InputField}" />
+                        </Grid>
+
+                        <Label Grid.Row="3"
+                               Text="Quality: 10-100 (higher = better quality, larger file)"
+                               Style="{StaticResource Caption}"
+                               TextColor="{StaticResource TextTertiary}" />
+                    </Grid>
+                </Frame>
+
+                <!-- Image Gallery -->
+                <Frame Grid.Row="2"
+                       Style="{StaticResource Card}">
+                    <Grid RowDefinitions="Auto,*"
+                          RowSpacing="{StaticResource SpacingMD}">
+
+                        <Grid Grid.Row="0"
+                              ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="Captured Images"
+                                   Style="{StaticResource HeadingSmall}" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding CapturedImages.Count, StringFormat='{0} images'}"
+                                   Style="{StaticResource BodySmall}"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                        <CollectionView Grid.Row="1"
+                                        ItemsSource="{Binding CapturedImages}"
+                                        SelectionMode="Single"
+                                        SelectedItem="{Binding SelectedImagePath}"
+                                        MinimumHeightRequest="200">
+
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"
+                                                 Span="3"
+                                                 HorizontalItemSpacing="{StaticResource SpacingSM}"
+                                                 VerticalItemSpacing="{StaticResource SpacingSM}" />
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Frame BackgroundColor="{StaticResource Gray100}"
+                                               CornerRadius="{StaticResource RadiusMD}"
+                                               Padding="2"
+                                               HasShadow="True">
+                                            <Image Source="{Binding .}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="100"
+                                                   WidthRequest="100" />
+                                        </Frame>
+
+                                        <!-- Selection Indicator -->
+                                        <Frame BackgroundColor="{StaticResource Primary}"
+                                               CornerRadius="12"
+                                               WidthRequest="24"
+                                               HeightRequest="24"
+                                               Padding="0"
+                                               HorizontalOptions="End"
+                                               VerticalOptions="Start"
+                                               Margin="4"
+                                               IsVisible="{Binding ., Converter={StaticResource EqualConverter}, ConverterParameter={Binding Source={RelativeSource AncestorType={x:Type viewmodels:PhotoCaptureViewModel}}, Path=SelectedImagePath}}">
+                                            <Label Text="✓"
+                                                   TextColor="White"
+                                                   FontSize="12"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Frame>
+
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PhotoCaptureViewModel}}, Path=SelectImageCommand}"
+                                                                  CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.EmptyView>
+                                <StackLayout HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             Spacing="{StaticResource SpacingMD}"
+                                             Padding="{StaticResource SpacingXL}">
+                                    <Label Text="📷"
+                                           FontSize="48"
+                                           HorizontalOptions="Center"
+                                           TextColor="{StaticResource TextTertiary}" />
+                                    <Label Text="No images captured yet"
+                                           Style="{StaticResource BodyMedium}"
+                                           HorizontalOptions="Center"
+                                           TextColor="{StaticResource TextTertiary}" />
+                                    <Label Text="Use the Camera or Gallery buttons above to add images"
+                                           Style="{StaticResource Caption}"
+                                           HorizontalOptions="Center"
+                                           TextColor="{StaticResource TextTertiary}"
+                                           HorizontalTextAlignment="Center" />
+                                </StackLayout>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </ScrollView>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="3"
+              Style="{StaticResource LoadingOverlay}"
+              IsVisible="{Binding IsBusy}">
+            <Frame Style="{StaticResource LoadingCard}">
+                <StackLayout Spacing="{StaticResource SpacingMD}"
+                             HorizontalOptions="Center">
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                       Color="{StaticResource Primary}"
+                                       WidthRequest="40"
+                                       HeightRequest="40" />
+                    <Label Text="{Binding Subtitle}"
+                           Style="{StaticResource BodyMedium}"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding Subtitle, Converter={StaticResource StringToBoolConverter}}" />
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
+
+</ContentPage>

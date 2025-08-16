@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="WarehouseApp.MAUI.Views.BarcodeScannerPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WarehouseApp.MAUI.ViewModels"
+             x:DataType="viewmodels:BarcodeScannerViewModel"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <!-- Camera View - Temporarily disabled for build -->
+        <!-- <zxing:CameraBarcodeReaderView x:Name="CameraView"
+                                       IsDetecting="{Binding IsScanning}"
+                                       IsTorchOn="{Binding IsTorchOn}"
+                                       BarcodesDetected="OnBarcodesDetected">
+            <zxing:CameraBarcodeReaderView.BarcodeCaptureOptions>
+                <zxing:BarcodeCaptureOptions>
+                    <zxing:BarcodeCaptureOptions.BarcodeFormats>
+                        <zxing:BarcodeFormat>QrCode</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Ean13</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Ean8</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Code128</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Code39</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Code93</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Codabar</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>DataMatrix</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Pdf417</zxing:BarcodeFormat>
+                        <zxing:BarcodeFormat>Aztec</zxing:BarcodeFormat>
+                    </zxing:BarcodeCaptureOptions.BarcodeFormats>
+                </zxing:BarcodeCaptureOptions>
+            </zxing:CameraBarcodeReaderView.BarcodeCaptureOptions>
+        </zxing:CameraBarcodeReaderView> -->
+
+        <!-- Placeholder for camera view -->
+        <Label Text="Camera View Placeholder"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               FontSize="18"
+               TextColor="{StaticResource TextSecondary}" />
+
+        <!-- Scanning Overlay -->
+        <Grid>
+            <!-- Scanning Frame -->
+            <Frame BackgroundColor="Transparent"
+                   BorderColor="{StaticResource Primary}"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   Padding="0"
+                   WidthRequest="250"
+                   HeightRequest="250"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <!-- Scanning Animation -->
+                <Grid>
+                    <Rectangle Fill="Transparent"
+                               Stroke="{StaticResource Primary}"
+                               StrokeThickness="3"
+                               RadiusX="12"
+                               RadiusY="12" />
+
+                    <!-- Corner Indicators -->
+                    <Grid>
+                        <!-- Top Left -->
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="20"
+                                   HeightRequest="3"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Start"
+                                   Margin="8,8,0,0" />
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="3"
+                                   HeightRequest="20"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Start"
+                                   Margin="8,8,0,0" />
+
+                        <!-- Top Right -->
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="20"
+                                   HeightRequest="3"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Start"
+                                   Margin="0,8,8,0" />
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="3"
+                                   HeightRequest="20"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Start"
+                                   Margin="0,8,8,0" />
+
+                        <!-- Bottom Left -->
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="20"
+                                   HeightRequest="3"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="End"
+                                   Margin="8,0,0,8" />
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="3"
+                                   HeightRequest="20"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="End"
+                                   Margin="8,0,0,8" />
+
+                        <!-- Bottom Right -->
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="20"
+                                   HeightRequest="3"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="End"
+                                   Margin="0,0,8,8" />
+                        <Rectangle Fill="{StaticResource Primary}"
+                                   WidthRequest="3"
+                                   HeightRequest="20"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="End"
+                                   Margin="0,0,8,8" />
+                    </Grid>
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- Top Controls -->
+        <Grid RowDefinitions="Auto,*"
+              VerticalOptions="Start">
+
+            <!-- Status Bar -->
+            <Frame Grid.Row="0"
+                   BackgroundColor="#80000000"
+                   CornerRadius="0"
+                   Padding="{StaticResource SpacingMD}"
+                   HasShadow="False"
+                   Margin="0">
+
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                    <!-- Back Button -->
+                    <Button Grid.Column="0"
+                            Text="←"
+                            Command="{Binding GoBackCommand}"
+                            Style="{StaticResource ButtonSmall}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="24"
+                            WidthRequest="40"
+                            HeightRequest="40" />
+
+                    <!-- Instructions -->
+                    <Label Grid.Column="1"
+                           Text="{Binding ScanInstructions}"
+                           Style="{StaticResource BodyMedium}"
+                           TextColor="White"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" />
+
+                    <!-- Torch Button -->
+                    <Button Grid.Column="2"
+                            Text="{Binding IsTorchOn, Converter={StaticResource BoolToStringConverter}, ConverterParameter='🔦|💡'}"
+                            Command="{Binding ToggleTorchCommand}"
+                            Style="{StaticResource ButtonSmall}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40" />
+
+                    <!-- History Button -->
+                    <Button Grid.Column="3"
+                            Text="📋"
+                            Command="{Binding ToggleScanHistoryCommand}"
+                            Style="{StaticResource ButtonSmall}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40" />
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- Bottom Controls -->
+        <Grid VerticalOptions="End">
+            <Frame BackgroundColor="#80000000"
+                   CornerRadius="0"
+                   Padding="{StaticResource SpacingMD}"
+                   HasShadow="False"
+                   Margin="0">
+
+                <Grid ColumnDefinitions="*,Auto,*"
+                      ColumnSpacing="{StaticResource SpacingLG}">
+
+                    <!-- Scan/Pause Button -->
+                    <Button Grid.Column="0"
+                            Text="{Binding IsScanning, Converter={StaticResource BoolToStringConverter}, ConverterParameter='⏸️ Pause|▶️ Scan'}"
+                            Command="{Binding ToggleScanningCommand}"
+                            Style="{StaticResource ButtonSecondary}"
+                            BackgroundColor="#80FFFFFF"
+                            TextColor="{StaticResource TextPrimary}"
+                            FontSize="16" />
+
+                    <!-- Continuous Scanning Toggle -->
+                    <Button Grid.Column="1"
+                            Text="{Binding ContinuousScanning, Converter={StaticResource BoolToStringConverter}, ConverterParameter='🔄|1️⃣'}"
+                            Command="{Binding ToggleContinuousScanningCommand}"
+                            Style="{StaticResource ButtonSmall}"
+                            BackgroundColor="{Binding ContinuousScanning, Converter={StaticResource BoolToColorConverter}, ConverterParameter='{StaticResource Primary}|#80FFFFFF'}"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            CornerRadius="25" />
+
+                    <!-- Last Scanned Result -->
+                    <Button Grid.Column="2"
+                            Text="📄 Result"
+                            Command="{Binding CopyToClipboardCommand}"
+                            CommandParameter="{Binding LastScannedValue}"
+                            Style="{StaticResource ButtonSecondary}"
+                            BackgroundColor="#80FFFFFF"
+                            TextColor="{StaticResource TextPrimary}"
+                            FontSize="16"
+                            IsVisible="{Binding LastScannedValue, Converter={StaticResource StringToBoolConverter}}" />
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- Scan History Overlay -->
+        <Grid IsVisible="{Binding ShowScanHistory}"
+              BackgroundColor="#CC000000">
+
+            <Frame BackgroundColor="{StaticResource Surface}"
+                   CornerRadius="{StaticResource RadiusLG}"
+                   Margin="{StaticResource SpacingXL}"
+                   Padding="0"
+                   HasShadow="True">
+
+                <Grid RowDefinitions="Auto,*,Auto"
+                      RowSpacing="0">
+
+                    <!-- Header -->
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="*,Auto"
+                          BackgroundColor="{StaticResource Primary}"
+                          Padding="{StaticResource SpacingMD}">
+
+                        <Label Grid.Column="0"
+                               Text="Scan History"
+                               Style="{StaticResource HeadingMedium}"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+
+                        <Button Grid.Column="1"
+                                Text="✕"
+                                Command="{Binding ToggleScanHistoryCommand}"
+                                Style="{StaticResource ButtonSmall}"
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                FontSize="18"
+                                WidthRequest="32"
+                                HeightRequest="32" />
+                    </Grid>
+
+                    <!-- History List -->
+                    <CollectionView Grid.Row="1"
+                                    ItemsSource="{Binding ScanHistory}"
+                                    MaximumHeightRequest="400">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto"
+                                      ColumnSpacing="{StaticResource SpacingMD}"
+                                      Padding="{StaticResource SpacingMD}"
+                                      BackgroundColor="{StaticResource Surface}">
+
+                                    <!-- Format Icon -->
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Format, Converter={StaticResource BarcodeFormatToIconConverter}}"
+                                           Style="{StaticResource BodyLarge}"
+                                           VerticalOptions="Center" />
+
+                                    <!-- Value and Time -->
+                                    <StackLayout Grid.Column="1"
+                                                 Spacing="2">
+                                        <Label Text="{Binding Value}"
+                                               Style="{StaticResource BodyMedium}"
+                                               LineBreakMode="TailTruncation"
+                                               MaxLines="1" />
+                                        <Label Text="{Binding ScannedAt, StringFormat='{0:HH:mm:ss}'}"
+                                               Style="{StaticResource Caption}"
+                                               TextColor="{StaticResource TextTertiary}" />
+                                    </StackLayout>
+
+                                    <!-- Copy Button -->
+                                    <Button Grid.Column="2"
+                                            Text="📋"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BarcodeScannerViewModel}}, Path=CopyToClipboardCommand}"
+                                            CommandParameter="{Binding Value}"
+                                            Style="{StaticResource ButtonSmall}"
+                                            BackgroundColor="{StaticResource Info}"
+                                            TextColor="White"
+                                            FontSize="14"
+                                            WidthRequest="32"
+                                            HeightRequest="32" />
+
+                                    <!-- Search Button -->
+                                    <Button Grid.Column="3"
+                                            Text="🔍"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BarcodeScannerViewModel}}, Path=SearchProductCommand}"
+                                            CommandParameter="{Binding Value}"
+                                            Style="{StaticResource ButtonSmall}"
+                                            BackgroundColor="{StaticResource Primary}"
+                                            TextColor="White"
+                                            FontSize="14"
+                                            WidthRequest="32"
+                                            HeightRequest="32" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                        <CollectionView.EmptyView>
+                            <StackLayout HorizontalOptions="Center"
+                                         VerticalOptions="Center"
+                                         Spacing="{StaticResource SpacingMD}"
+                                         Padding="{StaticResource SpacingXL}">
+                                <Label Text="📱"
+                                       FontSize="48"
+                                       HorizontalOptions="Center"
+                                       TextColor="{StaticResource TextTertiary}" />
+                                <Label Text="No scans yet"
+                                       Style="{StaticResource BodyMedium}"
+                                       HorizontalOptions="Center"
+                                       TextColor="{StaticResource TextTertiary}" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+
+                    <!-- Footer -->
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="*,Auto"
+                          Padding="{StaticResource SpacingMD}"
+                          BackgroundColor="{StaticResource Gray100}">
+
+                        <Label Grid.Column="0"
+                               Text="{Binding ScanHistory.Count, StringFormat='{0} scans'}"
+                               Style="{StaticResource Caption}"
+                               VerticalOptions="Center" />
+
+                        <Button Grid.Column="1"
+                                Text="Clear All"
+                                Command="{Binding ClearScanHistoryCommand}"
+                                Style="{StaticResource ButtonSmall}"
+                                BackgroundColor="{StaticResource Error}"
+                                TextColor="White"
+                                FontSize="12" />
+                    </Grid>
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="WarehouseApp.MAUI.Views.ProductListPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WarehouseApp.MAUI.ViewModels"
+             x:DataType="viewmodels:ProductListViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add"
+                     Command="{Binding AddProductCommand}"
+                     IconImageSource="plus.png" />
+        <ToolbarItem Text="Search"
+                     IconImageSource="search.png" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Search Bar -->
+        <SearchBar Grid.Row="0"
+                   Text="{Binding SearchText}"
+                   Placeholder="Search products..."
+                   SearchCommand="{Binding SearchCommand}"
+                   Margin="16,8" />
+
+        <!-- Products List -->
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+
+            <CollectionView ItemsSource="{Binding Products}"
+                            SelectedItem="{Binding SelectedProduct}">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              Padding="16,12"
+                              ColumnSpacing="12">
+
+                            <!-- Product Image Placeholder -->
+                            <Frame Grid.Column="0"
+                                   BackgroundColor="LightGray"
+                                   CornerRadius="8"
+                                   WidthRequest="60"
+                                   HeightRequest="60"
+                                   Padding="0"
+                                   HasShadow="False">
+                                <Label Text="📦"
+                                       FontSize="24"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Frame>
+
+                            <!-- Product Details -->
+                            <StackLayout Grid.Column="1"
+                                         Spacing="4"
+                                         VerticalOptions="Center">
+                                <Label Text="{Binding Name}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding SKU}"
+                                       FontSize="14"
+                                       TextColor="Gray" />
+                                <StackLayout Orientation="Horizontal"
+                                             Spacing="8">
+                                    <Label Text="{Binding Price, StringFormat='${0:F2}'}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="Green" />
+                                    <Label Text="{Binding CurrentStock, StringFormat='Stock: {0}'}"
+                                           FontSize="14"
+                                           TextColor="Blue" />
+                                </StackLayout>
+                            </StackLayout>
+
+                            <!-- Action Button -->
+                            <Button Grid.Column="2"
+                                    Text="Edit"
+                                    FontSize="12"
+                                    BackgroundColor="LightBlue"
+                                    TextColor="DarkBlue"
+                                    CornerRadius="8"
+                                    Padding="12,6"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ProductListViewModel}}, Path=EditProductCommand}"
+                                    CommandParameter="{Binding .}"
+                                    VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Spacing="12">
+                        <Label Text="📦"
+                               FontSize="64"
+                               HorizontalOptions="Center"
+                               TextColor="Gray" />
+                        <Label Text="No products found"
+                               FontSize="18"
+                               HorizontalOptions="Center"
+                               TextColor="Gray" />
+                        <Button Text="Add First Product"
+                                Command="{Binding AddProductCommand}"
+                                BackgroundColor="Blue"
+                                TextColor="White"
+                                CornerRadius="8"
+                                Padding="16,8" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="2"
+              IsVisible="{Binding IsBusy}"
+              BackgroundColor="#80000000">
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   Padding="20"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <StackLayout Spacing="12"
+                             HorizontalOptions="Center">
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                       Color="Blue"
+                                       WidthRequest="40"
+                                       HeightRequest="40" />
+                    <Label Text="{Binding Subtitle}"
+                           FontSize="14"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding Subtitle, Converter={StaticResource StringToBoolConverter}}" />
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
+
+</ContentPage>

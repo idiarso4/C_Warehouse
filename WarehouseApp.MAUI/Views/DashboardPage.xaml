@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="WarehouseApp.MAUI.Views.DashboardPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WarehouseApp.MAUI.ViewModels"
+             x:DataType="viewmodels:MainViewModel"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="True">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Sync"
+                     Command="{Binding SyncDataCommand}"
+                     IconImageSource="sync.png" />
+        <ToolbarItem Text="Settings"
+                     IconImageSource="settings.png" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+
+        <ScrollView>
+            <Grid Style="{StaticResource DashboardGrid}"
+                  RowDefinitions="Auto,Auto,Auto,*">
+
+                <!-- Header Section -->
+                <StackLayout Grid.Row="0"
+                             Spacing="{StaticResource SpacingSM}"
+                             Margin="{StaticResource SpacingMD}">
+                    <Label Text="Welcome to Warehouse Management"
+                           Style="{StaticResource HeadingMedium}"
+                           HorizontalOptions="Center" />
+
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Center"
+                                 Spacing="{StaticResource SpacingSM}">
+                        <Label Text="Last Sync:"
+                               Style="{StaticResource BodySmall}" />
+                        <Label Text="{Binding LastSyncTime}"
+                               Style="{StaticResource BodySmall}"
+                               FontAttributes="Bold"
+                               TextColor="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}" />
+                        <Ellipse Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                                 WidthRequest="8"
+                                 HeightRequest="8" />
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Statistics Cards -->
+                <Grid Grid.Row="1"
+                      ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto"
+                      ColumnSpacing="{StaticResource SpacingMD}"
+                      RowSpacing="{StaticResource SpacingMD}">
+
+                    <!-- Total Products Card -->
+                    <Frame Grid.Row="0" Grid.Column="0"
+                           Style="{StaticResource StatsCard}"
+                           BackgroundColor="{StaticResource PrimaryLighter}">
+                        <StackLayout Spacing="{StaticResource SpacingSM}">
+                            <Label Text="📦"
+                                   FontSize="{StaticResource FontSize3XL}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding TotalProducts}"
+                                   FontSize="{StaticResource FontSize2XL}"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Primary}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Total Products"
+                                   Style="{StaticResource BodyMedium}"
+                                   HorizontalOptions="Center"
+                                   TextColor="{StaticResource Primary}" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToProductsCommand}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <!-- Low Stock Items Card -->
+                    <Frame Grid.Row="0" Grid.Column="1"
+                           Style="{StaticResource StatsCard}"
+                           BackgroundColor="{StaticResource WarningLight}">
+                        <StackLayout Spacing="{StaticResource SpacingSM}">
+                            <Label Text="⚠️"
+                                   FontSize="{StaticResource FontSize3XL}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding LowStockItems}"
+                                   FontSize="{StaticResource FontSize2XL}"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Warning}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Low Stock"
+                                   Style="{StaticResource BodyMedium}"
+                                   HorizontalOptions="Center"
+                                   TextColor="{StaticResource Warning}" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToProductsCommand}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <!-- Total Categories Card -->
+                    <Frame Grid.Row="1" Grid.Column="0"
+                           Style="{StaticResource StatsCard}"
+                           BackgroundColor="{StaticResource SecondaryLighter}">
+                        <StackLayout Spacing="{StaticResource SpacingSM}">
+                            <Label Text="📂"
+                                   FontSize="{StaticResource FontSize3XL}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding TotalCategories}"
+                                   FontSize="{StaticResource FontSize2XL}"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Secondary}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Categories"
+                                   Style="{StaticResource BodyMedium}"
+                                   HorizontalOptions="Center"
+                                   TextColor="{StaticResource Secondary}" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToCategoriesCommand}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <!-- Total Locations Card -->
+                    <Frame Grid.Row="1" Grid.Column="1"
+                           Style="{StaticResource StatsCard}"
+                           BackgroundColor="{StaticResource AccentLighter}">
+                        <StackLayout Spacing="{StaticResource SpacingSM}">
+                            <Label Text="📍"
+                                   FontSize="{StaticResource FontSize3XL}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding TotalLocations}"
+                                   FontSize="{StaticResource FontSize2XL}"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Accent}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Locations"
+                                   Style="{StaticResource BodyMedium}"
+                                   HorizontalOptions="Center"
+                                   TextColor="{StaticResource Accent}" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToLocationsCommand}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </Grid>
+
+                <!-- Quick Actions Section -->
+                <StackLayout Grid.Row="2" Spacing="12">
+                    <Label Text="Quick Actions"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           Margin="0,8,0,0" />
+
+                    <CollectionView ItemsSource="{Binding QuickActions}"
+                                    HeightRequest="120">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal"
+                                               ItemSpacing="12" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White"
+                                       CornerRadius="12"
+                                       Padding="16"
+                                       HasShadow="True"
+                                       WidthRequest="100">
+                                    <StackLayout Spacing="8">
+                                        <Label Text="{Binding Icon}"
+                                               FontSize="24"
+                                               HorizontalOptions="Center" />
+                                        <Label Text="{Binding Title}"
+                                               FontSize="12"
+                                               HorizontalOptions="Center"
+                                               HorizontalTextAlignment="Center"
+                                               LineBreakMode="WordWrap" />
+                                    </StackLayout>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Command}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <!-- Recent Activities Section -->
+                <StackLayout Grid.Row="3" Spacing="12">
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="10">
+                        <Label Text="Recent Activities"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+                        <Button Text="View All"
+                                FontSize="14"
+                                BackgroundColor="Transparent"
+                                TextColor="Blue"
+                                Command="{Binding NavigateToReportsCommand}"
+                                HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+
+                    <CollectionView ItemsSource="{Binding RecentActivities}"
+                                    HeightRequest="300">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      Padding="12"
+                                      ColumnSpacing="12">
+
+                                    <!-- Activity Type Icon -->
+                                    <Frame Grid.Column="0"
+                                           BackgroundColor="{Binding Type, Converter={StaticResource ActivityTypeToColorConverter}}"
+                                           CornerRadius="20"
+                                           WidthRequest="40"
+                                           HeightRequest="40"
+                                           Padding="0"
+                                           HasShadow="False">
+                                        <Label Text="{Binding Type, Converter={StaticResource ActivityTypeToIconConverter}}"
+                                               FontSize="16"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               TextColor="White" />
+                                    </Frame>
+
+                                    <!-- Activity Details -->
+                                    <StackLayout Grid.Column="1"
+                                                 Spacing="4"
+                                                 VerticalOptions="Center">
+                                        <Label Text="{Binding Description}"
+                                               FontSize="14"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding TimeAgo}"
+                                               FontSize="12"
+                                               TextColor="Gray" />
+                                    </StackLayout>
+
+                                    <!-- Action Button -->
+                                    <Button Grid.Column="2"
+                                            Text="View"
+                                            FontSize="12"
+                                            BackgroundColor="LightGray"
+                                            TextColor="Black"
+                                            CornerRadius="8"
+                                            Padding="8,4"
+                                            VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                        <CollectionView.EmptyView>
+                            <StackLayout HorizontalOptions="Center"
+                                         VerticalOptions="Center"
+                                         Spacing="8">
+                                <Label Text="📋"
+                                       FontSize="48"
+                                       HorizontalOptions="Center"
+                                       TextColor="Gray" />
+                                <Label Text="No recent activities"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"
+                                       TextColor="Gray" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </StackLayout>
+
+            </Grid>
+        </ScrollView>
+    </RefreshView>
+
+    <!-- Loading Overlay -->
+    <Grid IsVisible="{Binding IsBusy}"
+          BackgroundColor="#80000000">
+        <Frame BackgroundColor="White"
+               CornerRadius="12"
+               Padding="20"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
+            <StackLayout Spacing="12"
+                         HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                   Color="Blue"
+                                   WidthRequest="40"
+                                   HeightRequest="40" />
+                <Label Text="{Binding Subtitle}"
+                       FontSize="14"
+                       HorizontalOptions="Center"
+                       IsVisible="{Binding Subtitle, Converter={StaticResource StringToBoolConverter}}" />
+            </StackLayout>
+        </Frame>
+    </Grid>
+
+</ContentPage>
